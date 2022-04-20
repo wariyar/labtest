@@ -33,9 +33,9 @@ jobs:
           if [ ! -z "$(docker ps |grep myapp)" ];then
               docker stop myapp
               docker rm myapp
-              docker run -d --name myapp -p 8080:80 myapp:1.0.2
+              docker run -d --name myapp -p 8080:8080 myapp:1.0.0
           else
-              docker run -d --name myapp -p 8080:80 myapp:1.0.2
+              docker run -d --name myapp -p 8080:8080 myapp:1.0.0
           fi
           sleep 60
 
