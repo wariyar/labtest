@@ -29,14 +29,15 @@ jobs:
         run: docker images
       
       - name: deploy app
-        run:  if [ ! -z "$(docker ps |grep myapp)" ];then
-                docker stop myapp
-                docker rm myapp
-                docker run -d --name myapp -p 8080:80 myapp:1.0.2
-              else
-                docker run -d --name myapp -p 8080:80 myapp:1.0.2
-              fi
-              sleep 60
+        run: | 
+          if [ ! -z "$(docker ps |grep myapp)" ];then
+              docker stop myapp
+              docker rm myapp
+              docker run -d --name myapp -p 8080:80 myapp:1.0.2
+          else
+              docker run -d --name myapp -p 8080:80 myapp:1.0.2
+          fi
+          sleep 60
 
       - name: test app
         run: curl localhost:8080
