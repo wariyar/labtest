@@ -17,7 +17,26 @@ jobs:
     runs-on: self-hosted
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: hello myname is 
-        run: |
-             uname -a
-             id
+      - uses: actions/checkout@v2
+
+      - name: check path
+        run: ls -l
+
+      - name: build app 
+        run: docker build -t myapp:1.0.0 .
+
+      - name: docker list
+        run: docker images
+      
+      - name: deploy app
+        run:  if [ ! -z "$(docker ps |grep myapp)" ];then
+                docker stop myapp
+                docker rm myapp
+                docker run -d --name myapp -p 8080:80 myapp:1.0.2
+              else
+                docker run -d --name myapp -p 8080:80 myapp:1.0.2
+              fi
+              sleep 60
+
+      - name: test app
+        run: curl localhost:8080
